@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Система управления</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: auto; }
+        .menu { list-style-type: none; padding: 0; }
+        .menu li { padding: 10px; background-color: #f4f4f4; margin-bottom: 1px; }
+        .menu li a { text-decoration: none; color: #333; display: block; }
+        .menu li a:hover { background-color: #ddd; }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; }
+        .form-group input { width: 100%; padding: 5px; }
+        .notification { color: green; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Авторизация</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Войти</button>
+        </form>
+
+        <ul id="menu" class="menu" style="display: none;">
+            <li><a href="#equipment">Оборудование</a></li>
+            <li><a href="#employees">Сотрудники</a></li>
+            <li><a href="#rooms">Помещения</a></li>
+            <li><a href="#reports">Отчеты</a></li>
+            <li><a href="#logout">Выход из системы</a></li>
+        </ul>
+
+        <div id="equipment" style="display: none;">
+            <h2>Оборудование</h2>
+            <button onclick="showAddEquipmentForm()">Добавить оборудование</button>
+            <button onclick="showRemoveEquipmentForm()">Списать оборудование</button>
+            <div id="addEquipmentForm" style="display: none;">
+                <div class="form-group">
+                    <label for="equipmentName">Наименование:</label>
+                    <input type="text" id="equipmentName">
+                </div>
+                <div class="form-group">
+                    <label for="equipmentInventory">Инвентарный номер:</label>
+                    <input type="text" id="equipmentInventory">
+                </div>
+                <div class="form-group">
+                    <label for="equipmentCode">Код оборудования:</label>
+                    <input type="text" id="equipmentCode">
+                </div>
+                <div class="form-group">
+                    <label for="equipmentState">Состояние:</label>
+                    <input type="text" id="equipmentState">
+                </div>
+                <button type="submit" onclick="addEquipment()">Добавить</button>
+            </div>
+            <div id="removeEquipmentForm" style="display: none;">
+                <div class="form-group">
+                    <label for="removeEquipmentName">Наименование:</label>
+                    <input type="text" id="removeEquipmentName">
+                </div>
+                <div class="form-group">
+                    <label for="removeEquipmentCode">Код оборудования:</label>
+                    <input type="text" id="removeEquipmentCode">
+                </div>
+                <div class="form-group">
+                    <label for="removeReason">Причина списания:</label>
+                    <input type="text" id="removeReason">
+                </div>
+                <button type="submit" onclick="removeEquipment()">Списать</button>
+            </div>
+            <div class="notification" id="equipmentNotification"></div>
+        </div>
+
+        <div id="employees" style="display: none;">
+            <h2>Сотрудники</h2>
+            <button onclick="showAddMOLForm()">Добавить МОЛ</button>
+            <div id="addMOLForm" style="display: none;">
+                <div class="form-group">
+                    <label for="molName">ФИО сотрудника:</label>
+                    <input type="text" id="molName">
+                </div>
+                <div class="form-group">
+                    <label for="molCode">Код МОЛ:</label>
+                    <input type="text" id="molCode">
+                </div>
+                <div class="form-group">
+                    <label for="molStartDate">Дата начала ответственности:</label>
+                    <input type="date" id="molStartDate">
+                </div>
+                <button type="submit" onclick="addMOL()">Добавить</button>
+            </div>
+            <div class="notification" id="molNotification"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            if (username === 'admin' && password === '1111') {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('menu').style.display = 'block';
+                // Переход к разделу "Оборудование"
+                document.getElementById('equipment').style.display = 'block';
+                document.getElementById('equipment').scrollIntoView();
+            } else {
+                alert('Неверные учетные данные');
+            }
+        });
+
+        function showAddEquipmentForm() {
+            document.getElementById('addEquipmentForm').style.display = 'block';
+            document.getElementById('removeEquipmentForm').style.display = 'none';
+        }
+
+        function showRemoveEquipmentForm() {
+            document.getElementById('removeEquipmentForm').style.display = 'block';
+            document.getElementById('addEquipmentForm').style.display = 'none';
+        }
+
+        function addEquipment() {
+            var name = document.getElementById('equipmentName').value;
+            var inventory = document.getElementById('equipmentInventory').value;
+            var code = document.getElementById('equipmentCode').value;
+            var state = document.getElementById('equipmentState').value;
+            document.getElementById('equipmentNotification').textContent = 'Оборудование добавлено';
+            document.getElementById('addEquipmentForm').style.display = 'none';
+        }
+
+        function removeEquipment() {
+            var name = document.getElementById('removeEquipmentName').value;
+            var code = document.getElementById('removeEquipmentCode').value;
+            var reason = document.getElementById('removeReason').value;
+            document.getElementById('equipmentNotification').textContent = 'Оборудование списано';
+            document.getElementById('removeEquipmentForm').style.display = 'none';
+        }
+
+        function showAddMOLForm() {
+            document.getElementById('addMOLForm').style.display = 'block';
+        }
+
+        function addMOL() {
+            var name = document.getElementById('molName').value;
+            var code = document.getElementById('molCode').value;
+            var startDate = document.getElementById('molStartDate').value;
+            document.getElementById('molNotification').textContent = 'МОЛ добавлен';
+            document.getElementById('addMOLForm').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
