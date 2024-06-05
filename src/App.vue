@@ -1,9 +1,26 @@
 <template>
-  <button>123123</button>
+  <Authorization
+    v-if="!userIsAuthorized"
+    :user-is-authorized="userIsAuthorized"
+    @updateUserIsAuthorized="userIsAuthorized=true"
+  />
 </template>
 
 <style>
 </style>
 
-<script setup>
+<script>
+import Authorization from '@/components/Authorization.vue';
+
+export default {
+  name: 'App',
+  components: {
+    Authorization,
+  },
+  data() {
+    return {
+      userIsAuthorized: false,
+    }
+  }
+}
 </script>
