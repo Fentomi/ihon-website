@@ -38,18 +38,10 @@ export default {
         login: 'admin',
         password: '1111',
       }
-
       if(this.userLogin === testData.login && this.userPassword === testData.password) isCurrentUser = true;
       //todo: делаем put-запрос на бэк на соответствие
-      isCurrentUser ? this.$emit('updateUserIsAuthorized', isCurrentUser) : this.showErrorMessage = true;
+      return isCurrentUser ? this.$emit('updateUserIsAuthorized', isCurrentUser) : this.showErrorMessage = true;
     }
   },
 }
 </script>
-
-<style lang="scss">
-.wrapper {
-  margin: 30vh auto;
-  width: 450px;
-}
-</style>

@@ -4,18 +4,20 @@
     :user-is-authorized="userIsAuthorized"
     @updateUserIsAuthorized="userIsAuthorized=true"
   />
+  <Main
+    v-if="userIsAuthorized"
+  />
 </template>
-
-<style>
-</style>
 
 <script>
 import Authorization from '@/components/Authorization.vue';
+import Main from '@/components/Main.vue';
 
 export default {
   name: 'App',
   components: {
     Authorization,
+    Main,
   },
   data() {
     return {
@@ -24,3 +26,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.wrapper {
+  margin: 30vh auto;
+  width: 450px;
+}
+</style>
