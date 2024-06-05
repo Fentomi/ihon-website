@@ -1,5 +1,4 @@
-# TeaStore
-Сайт-магазин для покупки чая
+# ihon-website
 
 # Установка:
 - npm install
