@@ -31,6 +31,9 @@ export default {
 <style>
 .wrapper {
   margin: 30vh auto;
-  width: 600px;
+  width: 700px;
+}
+.v-table__wrapper {
+  overflow-x: hidden !important;
 }
 </style>

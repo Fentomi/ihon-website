@@ -7,10 +7,25 @@
         :key="index"
       > 
         <v-expansion-panel-text>
-          <equipment v-if="index === widgetEnum.equipment"/>
-          <employees v-if="index === widgetEnum.employees"/>
-          <premises v-if="index === widgetEnum.premises"/>
-          <reports v-if="index === widgetEnum.reports"/>
+          <div v-if="index === widgetEnum.equipment">
+            <v-btn @click="openDialog('EquipmentAddDialog')" class="mr-1 mb-2"> Добавить </v-btn>
+            <v-btn @click="openDialog('EquipmentEditDialog')" class="mr-1 mb-2"> Редактировать </v-btn>
+            <v-btn @click="openDialog('EquipmentDeleteDialog')" class="mr-1 mb-2"> Списать </v-btn>
+            <v-btn @click="openDialog('EquipmentListDialog')" class="mr-1 mb-2"> Посмотреть записи </v-btn>
+          </div>
+          <div v-if="index === widgetEnum.employees">
+            <v-btn @click="openDialog('EmployeesAddDialog')" class="mr-1 mb-2"> Добавить МОЛ </v-btn>
+            <v-btn @click="openDialog('EmployeesEditDialog')" class="mr-1 mb-2"> Редактировать МОЛ </v-btn>
+            <v-btn @click="openDialog('EmployeesDeleteDialog')" class="mr-1 mb-2"> Уволить МОЛ </v-btn>
+            <v-btn @click="openDialog('EmployeesTrustedEquipmentDialog')" class="mr-1 mb-2"> Доверенное оборудование </v-btn>
+            <v-btn @click="openDialog('EmployeesListDialog')" class="mr-1 mb-2"> Посмотреть записи </v-btn>
+          </div>
+          <div v-if="index === widgetEnum.premises">
+            <v-btn @click="openDialog('PremisesListDialog')" class="mr-1 mb-2"> Посмотреть записи </v-btn>
+          </div>
+          <div v-if="index === widgetEnum.reports">
+            <v-btn @click="openDialog('ReportsListDialog')" class="mr-1 mb-2"> Принять отчет </v-btn>
+          </div>
         </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -32,5 +47,22 @@ export default {
     }
   },
   components: { Employees, Equipment, Premises, Reports },
+  methods: {
+    openDialog(typeDialog) {
+      switch (typeDialog) {
+        case 'EquipmentAddDialog': console.log('1'); break;
+        case 'EquipmentEditDialog': console.log('2'); break;
+        case 'EquipmentDeleteDialog': console.log('3'); break;
+        case 'EquipmentListDialog': console.log('4'); break;
+        case 'EmployeesAddDialog': console.log('5'); break;
+        case 'EmployeesEditDialog': console.log('6'); break;
+        case 'EmployeesDeleteDialog': console.log('7'); break;
+        case 'EmployeesTrustedEquipmentDialog': console.log('8'); break;
+        case 'EmployeesListDialog': console.log('9'); break;
+        case 'PremisesListDialog': console.log('10'); break;
+        case 'ReportsListDialog': console.log('11'); break;
+      }
+    }
+  }
 }
 </script>
