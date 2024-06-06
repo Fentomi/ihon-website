@@ -6,6 +6,7 @@
   />
   <Main
     v-if="userIsAuthorized"
+    @logout="userIsAuthorized=false"
   />
 </template>
 
@@ -21,7 +22,7 @@ export default {
   },
   data() {
     return {
-      userIsAuthorized: false,
+      userIsAuthorized: true,
     }
   }
 }
@@ -30,6 +31,6 @@ export default {
 <style>
 .wrapper {
   margin: 30vh auto;
-  width: 450px;
+  width: 600px;
 }
 </style>
