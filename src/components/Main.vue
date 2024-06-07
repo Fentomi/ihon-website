@@ -13,6 +13,7 @@
             <btn-with-form-dialog
               header-text="Добавление оборудования"
               btn-text="Добавить"
+              @reset-btn-actions="resetBtnActions"
               :max-width="1200"
               :is-access-action="isAccessAction"
               :is-error-action="isErrorAction"
@@ -29,6 +30,7 @@
             <btn-with-form-dialog
               header-text="Редактирование оборудования"
               btn-text="Редактировать"
+              @reset-btn-actions="resetBtnActions"
               :max-width="1200"
               :is-access-action="isAccessAction"
               :is-error-action="isErrorAction"
@@ -41,8 +43,23 @@
                 :label="data.labelText"
               />
             </btn-with-form-dialog>
-            <!-- <v-btn @click="openDialog('EquipmentEditDialog')" class="mr-1 mb-2"> Редактировать </v-btn> -->
-            <v-btn @click="openDialog('EquipmentDeleteDialog')" class="mr-1 mb-2"> Списать </v-btn>
+            <!-- Списание оборудования -->
+            <btn-with-form-dialog
+              header-text="Списание оборудования"
+              btn-text="Списать"
+              @reset-btn-actions="resetBtnActions"
+              :max-width="1200"
+              :is-access-action="isAccessAction"
+              :is-error-action="isErrorAction"
+              :deleteFunction="equipmentDeleteFunction"
+              is-delete
+            >
+              <v-text-field
+                v-for="data, index in equipmentDeleteDialogInputItems" :key="index"
+                v-model="data.dataModel"
+                :label="data.labelText"
+              />
+            </btn-with-form-dialog>
             <!-- Посмотреть записи оборудования -->
             <btn-with-list-dialog
               header-text="Список оборудования"
@@ -113,6 +130,13 @@ export default {
         { dataModel: '', labelText: 'Состояние' },
         { dataModel: '', labelText: 'Код типа оборудования' },
       ],
+      equipmentDeleteDialogInputItems: [
+        { dataModel: '', labelText: 'id *'},
+        { dataModel: '', labelText: 'Код оборудования' },
+        { dataModel: '', labelText: 'Инвентарный номер' },
+        { dataModel: '', labelText: 'Состояние' },
+        { dataModel: '', labelText: 'Код типа оборудования' },
+      ],
       equipmentListDialogItems: [
         { id: 1, inventoryCode: 505, inventoryNumber: 100501, state: 'Active', typeCodeEquipment: 600},
         { id: 2, inventoryCode: 555, inventoryNumber: 100502, state: 'Active', typeCodeEquipment: 450},
@@ -120,11 +144,43 @@ export default {
         { id: 4, inventoryCode: 575, inventoryNumber: 100504, state: 'Active', typeCodeEquipment: 600},
         { id: 5, inventoryCode: 585, inventoryNumber: 100505, state: 'Active', typeCodeEquipment: 550},
       ],
+
+      employeesListDialogItems: [
+        { id: 1, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
+          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
+          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
+        },
+        { id: 2, codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
+          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
+          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
+        },
+        { id: 3, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
+          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
+          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
+        },
+        { id: 4, codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
+          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
+          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
+        },
+        { id: 5, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
+          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
+          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
+        },
+        { id: 6, codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
+          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
+          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
+        }
+      ],
       isAccessAction: false,
       isErrorAction: false,
     }
   },
   methods: {
+    resetBtnActions() {
+      debugger;
+      this.isAccessAction = false;
+      this.isErrorAction = false;
+    },
     equipmentAddFunction() {
       if(!this.equipmentAddDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
       this.isAccessAction = true;
@@ -150,7 +206,15 @@ export default {
         state: this.equipmentEditDialogInputItems[3].dataModel,
         typeCodeEquipment: this.equipmentEditDialogInputItems[4].dataModel
       });
-      this.equipmentAddDialogInputItems = this.equipmentAddDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+      this.equipmentEditDialogInputItems = this.equipmentEditDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+    },
+    equipmentDeleteFunction() {
+      if(!this.equipmentDeleteDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
+      this.isAccessAction = true;
+      const id = this.equipmentDeleteDialogInputItems[0].dataModel;
+      const index = this.equipmentListDialogItems.findIndex(el => el.id == id);
+      this.equipmentListDialogItems.splice(index, 1);
+      this.equipmentDeleteDialogInputItems = this.equipmentDeleteDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
     }
   },
   computed: {
@@ -175,34 +239,6 @@ export default {
         { title: 'Код подразделения', align: 'center', key: 'departmentCodeEmployee'},
         { title: 'Электронная почта', align: 'center', key: 'emailEmployee'},
       ];
-    },
-    EmployeesListDialogItems() {
-      return [
-        { id: 1, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
-          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
-          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
-        },
-        { id: 2, codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
-          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
-          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
-        },
-        { id: 3, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
-          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
-          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
-        },
-        { id: 4, codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
-          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
-          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
-        },
-        { id: 5, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
-          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
-          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
-        },
-        { id: 6, codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
-          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
-          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
-        },
-      ]
     },
     PremisesListDialogHeader() {
       return [
