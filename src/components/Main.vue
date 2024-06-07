@@ -24,7 +24,6 @@
             <v-btn @click="openDialog('EmployeesEditDialog')" class="mr-1 mb-2"> Редактировать МОЛ </v-btn>
             <v-btn @click="openDialog('EmployeesDeleteDialog')" class="mr-1 mb-2"> Уволить МОЛ </v-btn>
             <v-btn @click="openDialog('EmployeesTrustedEquipmentDialog')" class="mr-1 mb-2"> Доверенное оборудование </v-btn>
-            <!-- <v-btn @click="openDialog('EmployeesListDialog')" class="mr-1 mb-2"> Посмотреть записи </v-btn> -->
             <btn-with-list-dialog
               header-text="Список МОЛов"
               btn-text="Посмотреть записи"
@@ -34,7 +33,14 @@
             />
           </div>
           <div v-if="index === widgetEnum.premises">
-            <v-btn @click="openDialog('PremisesListDialog')" class="mr-1 mb-2"> Посмотреть записи </v-btn>
+            <!-- <v-btn @click="openDialog('PremisesListDialog')" class="mr-1 mb-2"> Посмотреть записи </v-btn> -->
+            <btn-with-list-dialog
+              header-text="Список помещений"
+              btn-text="Посмотреть записи"
+              :max-width="600"
+              :headers="PremisesListDialogHeader"
+              :items="PremisesListDialogItems"
+            />
           </div>
           <div v-if="index === widgetEnum.reports">
             <v-btn @click="openDialog('ReportsListDialog')" class="mr-1 mb-2"> Принять отчет </v-btn>
@@ -70,7 +76,6 @@ export default {
         case 'EmployeesEditDialog': console.log('6'); break;
         case 'EmployeesDeleteDialog': console.log('7'); break;
         case 'EmployeesTrustedEquipmentDialog': console.log('8'); break;
-        case 'EmployeesListDialog': console.log('9'); break;
         case 'PremisesListDialog': console.log('10'); break;
         case 'ReportsListDialog': console.log('11'); break;
       }
@@ -96,7 +101,7 @@ export default {
     },
     EmployeesListDialogHeaders() {
       return [
-        { title: 'Код сотрудника', align: 'center', key: 'codeEmployee'},
+        { title: 'Код сотрудника', align: 'start', key: 'codeEmployee'},
         { title: 'Фамилия', align: 'center', key: 'surnameEmployee'},
         { title: 'Имя', align: 'center', key: 'firstnameEmployee'},
         { title: 'Отчество', align: 'center', key: 'lastnameEmployee'},
@@ -132,6 +137,23 @@ export default {
           lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
           departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
         },
+      ]
+    },
+    PremisesListDialogHeader() {
+      return [
+        { title: 'Код помещения', align: 'start', key: 'roomСode'},
+        { title: 'Название помещения', align: 'center', key: 'roomName'},
+        { title: 'Номер помещения', align: 'center', key: 'roomNumber'},
+        { title: 'Код подразделения', align: 'center', key: 'departmentCode'},
+      ];
+    },
+    PremisesListDialogItems() {
+      return [
+        { roomСode: 1, roomName: 'Столовая', roomNumber: 100500, departmentCode: 320},
+        { roomСode: 2, roomName: 'Гостинная', roomNumber: 100501, departmentCode: 320},
+        { roomСode: 3, roomName: 'Диванная', roomNumber: 100502, departmentCode: 320},
+        { roomСode: 4, roomName: 'Стуловая', roomNumber: 100503, departmentCode: 420},
+        { roomСode: 5, roomName: 'Коверная', roomNumber: 100504, departmentCode: 420},
       ]
     },
   }
