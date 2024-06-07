@@ -24,7 +24,14 @@
             <v-btn @click="openDialog('EmployeesEditDialog')" class="mr-1 mb-2"> Редактировать МОЛ </v-btn>
             <v-btn @click="openDialog('EmployeesDeleteDialog')" class="mr-1 mb-2"> Уволить МОЛ </v-btn>
             <v-btn @click="openDialog('EmployeesTrustedEquipmentDialog')" class="mr-1 mb-2"> Доверенное оборудование </v-btn>
-            <v-btn @click="openDialog('EmployeesListDialog')" class="mr-1 mb-2"> Посмотреть записи </v-btn>
+            <!-- <v-btn @click="openDialog('EmployeesListDialog')" class="mr-1 mb-2"> Посмотреть записи </v-btn> -->
+            <btn-with-list-dialog
+              header-text="Список МОЛов"
+              btn-text="Посмотреть записи"
+              :max-width="1200"
+              :headers="EmployeesListDialogHeaders"
+              :items="EmployeesListDialogItems"
+            />
           </div>
           <div v-if="index === widgetEnum.premises">
             <v-btn @click="openDialog('PremisesListDialog')" class="mr-1 mb-2"> Посмотреть записи </v-btn>
@@ -59,7 +66,6 @@ export default {
         case 'EquipmentAddDialog': console.log('1'); break;
         case 'EquipmentEditDialog': console.log('2'); break;
         case 'EquipmentDeleteDialog': console.log('3'); break;
-        case 'EquipmentListDialog': console.log('4'); break;
         case 'EmployeesAddDialog': console.log('5'); break;
         case 'EmployeesEditDialog': console.log('6'); break;
         case 'EmployeesDeleteDialog': console.log('7'); break;
@@ -87,7 +93,47 @@ export default {
         { inventoryCode: 575, inventoryNumber: 100504, state: 'Active', typeCodeEquipment: 600},
         { inventoryCode: 585, inventoryNumber: 100505, state: 'Active', typeCodeEquipment: 550},
       ];
-    }
+    },
+    EmployeesListDialogHeaders() {
+      return [
+        { title: 'Код сотрудника', align: 'center', key: 'codeEmployee'},
+        { title: 'Фамилия', align: 'center', key: 'surnameEmployee'},
+        { title: 'Имя', align: 'center', key: 'firstnameEmployee'},
+        { title: 'Отчество', align: 'center', key: 'lastnameEmployee'},
+        { title: 'Телефон', align: 'center', key: 'telephoneEmployee'},
+        { title: 'Код должности', align: 'center', key: 'jobCodeEmployee'},
+        { title: 'Код подразделения', align: 'center', key: 'departmentCodeEmployee'},
+        { title: 'Электронная почта', align: 'center', key: 'emailEmployee'},
+      ];
+    },
+    EmployeesListDialogItems() {
+      return [
+        { codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
+          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
+          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
+        },
+        { codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
+          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
+          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
+        },
+        { codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
+          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
+          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
+        },
+        { codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
+          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
+          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
+        },
+        { codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
+          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
+          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
+        },
+        { codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
+          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
+          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
+        },
+      ]
+    },
   }
 }
 </script>
