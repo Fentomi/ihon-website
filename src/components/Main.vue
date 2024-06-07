@@ -13,7 +13,7 @@
             <v-btn @click="openDialog('EquipmentDeleteDialog')" class="mr-1 mb-2"> Списать </v-btn>
             <btn-with-list-dialog
               header-text="Список оборудования"
-              btn-text="Кнопка"
+              btn-text="Посмотреть записи"
               :max-width="700"
               :headers="EquipmentListDialogHeaders"
               :items="EquipmentListDialogItems"
