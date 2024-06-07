@@ -122,7 +122,7 @@
                 :label="data.labelText"
               />
             </btn-with-form-dialog>
-            <v-btn @click="openDialog('EmployeesTrustedEquipmentDialog')" class="mr-1 mb-2"> Доверенное оборудование </v-btn>
+            <v-btn @click="" class="mr-1 mb-2"> Доверенное оборудование </v-btn>
             <!-- Посмотреть записи МОЛов -->
             <btn-with-list-dialog
               header-text="Список МОЛов"
@@ -132,6 +132,7 @@
               :items="employeesListDialogItems"
             />
           </div>
+          <!-- Помещения -->
           <div v-if="index === widgetEnum.premises">
             <!-- Посмотреть записи помещений -->
             <btn-with-list-dialog
@@ -142,6 +143,7 @@
               :items="PremisesListDialogItems"
             />
           </div>
+          <!-- Отчеты -->
           <div v-if="index === widgetEnum.reports">
             <btn-with-form-dialog
               header-text="Отчетов нет"
