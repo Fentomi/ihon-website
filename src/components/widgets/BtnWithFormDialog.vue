@@ -1,7 +1,7 @@
 <template>
   <v-dialog :max-width="maxWidth">
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn @click="this.$emit('resetBtnActions')" v-bind="activatorProps" :text="btnText" class="mb-2"/>
+      <v-btn @click="this.$emit('resetBtnActions')" v-bind="activatorProps" :text="btnText" class="mb-2 mr-2"/>
     </template>
     <template v-slot:default="{ isActive }">
       <v-card :title="headerText">

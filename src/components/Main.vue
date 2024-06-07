@@ -69,10 +69,59 @@
               :items="equipmentListDialogItems"
             />
           </div>
+          <!-- МОЛы -->
           <div v-if="index === widgetEnum.employees">
-            <v-btn @click="openDialog('EmployeesAddDialog')" class="mr-1 mb-2"> Добавить МОЛ </v-btn>
-            <v-btn @click="openDialog('EmployeesEditDialog')" class="mr-1 mb-2"> Редактировать МОЛ </v-btn>
-            <v-btn @click="openDialog('EmployeesDeleteDialog')" class="mr-1 mb-2"> Уволить МОЛ </v-btn>
+            <!-- Добавить МОЛа -->
+            <btn-with-form-dialog
+              header-text="Добавление МОЛа"
+              btn-text="Добавить"
+              @reset-btn-actions="resetBtnActions"
+              :max-width="1200"
+              :is-access-action="isAccessAction"
+              :is-error-action="isErrorAction"
+              :addFunction="employeeAddFunc"
+              is-add
+            >
+              <v-text-field
+                v-for="data, index in employeesAddDialogInputItems" :key="index"
+                v-model="data.dataModel"
+                :label="data.labelText"
+              />
+            </btn-with-form-dialog>
+            <!-- Редактирование МОЛа -->
+            <btn-with-form-dialog
+              header-text="Редактирование МОЛа"
+              btn-text="Редактировать"
+              @reset-btn-actions="resetBtnActions"
+              :max-width="1200"
+              :is-access-action="isAccessAction"
+              :is-error-action="isErrorAction"
+              :editFunction="employeeEditFunc"
+              is-edit
+            >
+              <v-text-field
+                v-for="data, index in employeesEditDialogInputItems" :key="index"
+                v-model="data.dataModel"
+                :label="data.labelText"
+              />
+            </btn-with-form-dialog>
+            <!-- Увольнение МОЛа -->
+            <btn-with-form-dialog
+              header-text="Увольнение МОЛа"
+              btn-text="Уволить"
+              @reset-btn-actions="resetBtnActions"
+              :max-width="1200"
+              :is-access-action="isAccessAction"
+              :is-error-action="isErrorAction"
+              :deleteFunction="employeeDeleteFunc"
+              is-delete
+            >
+              <v-text-field
+                v-for="data, index in employeesDeleteDialogInputItems" :key="index"
+                v-model="data.dataModel"
+                :label="data.labelText"
+              />
+            </btn-with-form-dialog>
             <v-btn @click="openDialog('EmployeesTrustedEquipmentDialog')" class="mr-1 mb-2"> Доверенное оборудование </v-btn>
             <!-- Посмотреть записи МОЛов -->
             <btn-with-list-dialog
@@ -80,7 +129,7 @@
               btn-text="Посмотреть записи"
               :max-width="1200"
               :headers="EmployeesListDialogHeaders"
-              :items="EmployeesListDialogItems"
+              :items="employeesListDialogItems"
             />
           </div>
           <div v-if="index === widgetEnum.premises">
@@ -144,7 +193,38 @@ export default {
         { id: 4, inventoryCode: 575, inventoryNumber: 100504, state: 'Active', typeCodeEquipment: 600},
         { id: 5, inventoryCode: 585, inventoryNumber: 100505, state: 'Active', typeCodeEquipment: 550},
       ],
-
+      employeesAddDialogInputItems: [
+        { dataModel: '', labelText: 'Код сотрудника' },
+        { dataModel: '', labelText: 'Фамилия' },
+        { dataModel: '', labelText: 'Имя' },
+        { dataModel: '', labelText: 'Отчество' },
+        { dataModel: '', labelText: 'Телефон' },
+        { dataModel: '', labelText: 'Код должности' },
+        { dataModel: '', labelText: 'Код подразделения' },
+        { dataModel: '', labelText: 'Email' },
+      ],
+      employeesEditDialogInputItems: [
+        { dataModel: '', labelText: 'id' },
+        { dataModel: '', labelText: 'Код сотрудника' },
+        { dataModel: '', labelText: 'Фамилия' },
+        { dataModel: '', labelText: 'Имя' },
+        { dataModel: '', labelText: 'Отчество' },
+        { dataModel: '', labelText: 'Телефон' },
+        { dataModel: '', labelText: 'Код должности' },
+        { dataModel: '', labelText: 'Код подразделения' },
+        { dataModel: '', labelText: 'Email' },
+      ],
+      employeesDeleteDialogInputItems: [
+        { dataModel: '', labelText: 'id' },
+        { dataModel: '', labelText: 'Код сотрудника' },
+        { dataModel: '', labelText: 'Фамилия' },
+        { dataModel: '', labelText: 'Имя' },
+        { dataModel: '', labelText: 'Отчество' },
+        { dataModel: '', labelText: 'Телефон' },
+        { dataModel: '', labelText: 'Код должности' },
+        { dataModel: '', labelText: 'Код подразделения' },
+        { dataModel: '', labelText: 'Email' },
+      ],
       employeesListDialogItems: [
         { id: 1, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
           lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
@@ -177,7 +257,6 @@ export default {
   },
   methods: {
     resetBtnActions() {
-      debugger;
       this.isAccessAction = false;
       this.isErrorAction = false;
     },
@@ -215,7 +294,51 @@ export default {
       const index = this.equipmentListDialogItems.findIndex(el => el.id == id);
       this.equipmentListDialogItems.splice(index, 1);
       this.equipmentDeleteDialogInputItems = this.equipmentDeleteDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
-    }
+    },
+    employeeAddFunc() {
+      if(!this.employeesAddDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
+      this.isAccessAction = true;
+      console.log(this.employeesAddDialogInputItems);
+      this.employeesListDialogItems.push({
+        id: this.employeesListDialogItems.length+1,
+        codeEmployee: this.employeesAddDialogInputItems[0].dataModel,
+        surnameEmployee: this.employeesAddDialogInputItems[1].dataModel,
+        firstnameEmployee: this.employeesAddDialogInputItems[2].dataModel,
+        lastnameEmployee: this.employeesAddDialogInputItems[3].dataModel,
+        telephoneEmployee: this.employeesAddDialogInputItems[4].dataModel,
+        jobCodeEmployee: this.employeesAddDialogInputItems[5].dataModel,
+        departmentCodeEmployee: this.employeesAddDialogInputItems[6].dataModel,
+        emailEmployee: this.employeesAddDialogInputItems[7].dataModel,
+      });
+      this.employeesAddDialogInputItems = this.employeesAddDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+    },
+    employeeEditFunc() {
+      if(!this.employeesEditDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
+      this.isAccessAction = true;
+      const id = this.employeesEditDialogInputItems[0].dataModel;
+      const index = this.employeesListDialogItems.findIndex(el => el.id == id);
+      this.employeesListDialogItems.splice(index, 1);
+      this.employeesListDialogItems.splice(index, 0, {
+        id: id,
+        codeEmployee: this.employeesEditDialogInputItems[0].dataModel,
+        surnameEmployee: this.employeesEditDialogInputItems[1].dataModel,
+        firstnameEmployee: this.employeesEditDialogInputItems[2].dataModel,
+        lastnameEmployee: this.employeesEditDialogInputItems[3].dataModel,
+        telephoneEmployee: this.employeesEditDialogInputItems[4].dataModel,
+        jobCodeEmployee: this.employeesEditDialogInputItems[5].dataModel,
+        departmentCodeEmployee: this.employeesEditDialogInputItems[6].dataModel,
+        emailEmployee: this.employeesEditDialogInputItems[7].dataModel,
+      });
+      this.employeesEditDialogInputItems = this.employeesEditDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+    },
+    employeeDeleteFunc() {
+      if(!this.employeesDeleteDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
+      this.isAccessAction = true;
+      const id = this.employeesDeleteDialogInputItems[0].dataModel;
+      const index = this.employeesListDialogItems.findIndex(el => el.id == id);
+      this.employeesListDialogItems.splice(index, 1);
+      this.employeesDeleteDialogInputItems = this.employeesDeleteDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+    },
   },
   computed: {
     EquipmentListDialogHeaders() {
