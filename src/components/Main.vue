@@ -11,7 +11,13 @@
             <v-btn @click="openDialog('EquipmentAddDialog')" class="mr-1 mb-2"> Добавить </v-btn>
             <v-btn @click="openDialog('EquipmentEditDialog')" class="mr-1 mb-2"> Редактировать </v-btn>
             <v-btn @click="openDialog('EquipmentDeleteDialog')" class="mr-1 mb-2"> Списать </v-btn>
-            <v-btn @click="openDialog('EquipmentListDialog')" class="mr-1 mb-2"> Посмотреть записи </v-btn>
+            <btn-with-list-dialog
+              header-text="Список оборудования"
+              btn-text="Кнопка"
+              :max-width="700"
+              :headers="EquipmentListDialogHeaders"
+              :items="EquipmentListDialogItems"
+            />
           </div>
           <div v-if="index === widgetEnum.employees">
             <v-btn @click="openDialog('EmployeesAddDialog')" class="mr-1 mb-2"> Добавить МОЛ </v-btn>
@@ -35,9 +41,9 @@
 
 <script>
 import Employees from '@/components/widgets/Employees.vue';
-import Equipment from '@/components/widgets/Equipment.vue';
 import Premises from '@/components/widgets/Premises.vue';
 import Reports from '@/components/widgets/Reports.vue';
+import BtnWithListDialog from '@/components/widgets/BtnWithListDialog.vue';
 
 export default {
   data() {
@@ -46,7 +52,7 @@ export default {
       widgetEnum: { equipment: 0, employees: 1, premises: 2, reports: 3 },
     }
   },
-  components: { Employees, Equipment, Premises, Reports },
+  components: { Employees, Premises, Reports, BtnWithListDialog },
   methods: {
     openDialog(typeDialog) {
       switch (typeDialog) {
@@ -62,6 +68,25 @@ export default {
         case 'PremisesListDialog': console.log('10'); break;
         case 'ReportsListDialog': console.log('11'); break;
       }
+    }
+  },
+  computed: {
+    EquipmentListDialogHeaders() {
+      return [
+        { title: 'Код оборудования', align: 'start', key: 'inventoryCode' },
+        { title: 'Инвентарный номер', align: 'end', key: 'inventoryNumber' },
+        { title: 'Состояние', align: 'end', key: 'state' },
+        { title: 'Код типа оборудования', align: 'end', key: 'typeCodeEquipment' },
+      ]; 
+    },
+    EquipmentListDialogItems() {
+      return [
+        { inventoryCode: 505, inventoryNumber: 100501, state: 'Active', typeCodeEquipment: 600},
+        { inventoryCode: 555, inventoryNumber: 100502, state: 'Active', typeCodeEquipment: 450},
+        { inventoryCode: 565, inventoryNumber: 100503, state: 'Disabled', typeCodeEquipment: 450},
+        { inventoryCode: 575, inventoryNumber: 100504, state: 'Active', typeCodeEquipment: 600},
+        { inventoryCode: 585, inventoryNumber: 100505, state: 'Active', typeCodeEquipment: 550},
+      ];
     }
   }
 }
