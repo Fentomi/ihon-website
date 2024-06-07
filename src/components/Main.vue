@@ -26,8 +26,10 @@
                 :label="data.labelText"
               />
             </btn-with-form-dialog>
-            <v-btn @click="openDialog('EquipmentEditDialog')" class="mr-1 mb-2"> Редактировать </v-btn>
+            <!-- Редактирование оборудования -->
+            <!-- <v-btn @click="openDialog('EquipmentEditDialog')" class="mr-1 mb-2"> Редактировать </v-btn> -->
             <v-btn @click="openDialog('EquipmentDeleteDialog')" class="mr-1 mb-2"> Списать </v-btn>
+            <!-- Посмотреть записи оборудования -->
             <btn-with-list-dialog
               header-text="Список оборудования"
               btn-text="Посмотреть записи"
