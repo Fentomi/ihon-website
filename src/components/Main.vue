@@ -107,8 +107,8 @@
             </btn-with-form-dialog>
             <!-- Увольнение МОЛа -->
             <btn-with-form-dialog
-              header-text="Увольнение МОЛа"
-              btn-text="Уволить"
+              header-text="Отстранение МОЛа"
+              btn-text="Отстранить"
               @reset-btn-actions="resetBtnActions"
               :max-width="1200"
               :is-access-action="isAccessAction"
@@ -125,7 +125,7 @@
             <v-btn @click="" class="mr-1 mb-2"> Доверенное оборудование </v-btn>
             <!-- Посмотреть записи МОЛов -->
             <btn-with-list-dialog
-              header-text="Список МОЛов"
+              header-text="Список сотрудников"
               btn-text="Посмотреть записи"
               :max-width="1200"
               :headers="EmployeesListDialogHeaders"
@@ -196,36 +196,19 @@ export default {
         { id: 5, inventoryCode: 585, inventoryNumber: 100505, state: 'Active', typeCodeEquipment: 550},
       ],
       employeesAddDialogInputItems: [
+        { dataModel: '', labelText: 'Код МОЛа' },
         { dataModel: '', labelText: 'Код сотрудника' },
-        { dataModel: '', labelText: 'Фамилия' },
-        { dataModel: '', labelText: 'Имя' },
-        { dataModel: '', labelText: 'Отчество' },
-        { dataModel: '', labelText: 'Телефон' },
-        { dataModel: '', labelText: 'Код должности' },
-        { dataModel: '', labelText: 'Код подразделения' },
-        { dataModel: '', labelText: 'Email' },
+        { dataModel: '', labelText: 'Начало ответственности' },
       ],
       employeesEditDialogInputItems: [
-        { dataModel: '', labelText: 'id' },
+        { dataModel: '', labelText: 'Код МОЛа' },
         { dataModel: '', labelText: 'Код сотрудника' },
-        { dataModel: '', labelText: 'Фамилия' },
-        { dataModel: '', labelText: 'Имя' },
-        { dataModel: '', labelText: 'Отчество' },
-        { dataModel: '', labelText: 'Телефон' },
-        { dataModel: '', labelText: 'Код должности' },
-        { dataModel: '', labelText: 'Код подразделения' },
-        { dataModel: '', labelText: 'Email' },
+        { dataModel: '', labelText: 'Начало ответственности' },
       ],
       employeesDeleteDialogInputItems: [
-        { dataModel: '', labelText: 'id' },
+        { dataModel: '', labelText: 'Код МОЛа' },
         { dataModel: '', labelText: 'Код сотрудника' },
-        { dataModel: '', labelText: 'Фамилия' },
-        { dataModel: '', labelText: 'Имя' },
-        { dataModel: '', labelText: 'Отчество' },
-        { dataModel: '', labelText: 'Телефон' },
-        { dataModel: '', labelText: 'Код должности' },
-        { dataModel: '', labelText: 'Код подразделения' },
-        { dataModel: '', labelText: 'Email' },
+        { dataModel: '', labelText: 'Начало ответственности' },
       ],
       employeesListDialogItems: [
         { id: 1, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
