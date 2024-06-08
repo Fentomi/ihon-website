@@ -39,7 +39,6 @@ export default {
         password: '1111',
       }
       if(this.userLogin === testData.login && this.userPassword === testData.password) isCurrentUser = true;
-      //todo: делаем put-запрос на бэк на соответствие
       return isCurrentUser ? this.$emit('updateUserIsAuthorized', isCurrentUser) : this.showErrorMessage = true;
     }
   },
