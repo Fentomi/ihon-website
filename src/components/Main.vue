@@ -83,7 +83,7 @@
               is-add
             >
               <v-text-field
-                v-for="data, index in employeesAddDialogInputItems" :key="index"
+                v-for="data, index in employeesDialogInputItems" :key="index"
                 v-model="data.dataModel"
                 :label="data.labelText"
               />
@@ -100,7 +100,7 @@
               is-edit
             >
               <v-text-field
-                v-for="data, index in employeesEditDialogInputItems" :key="index"
+                v-for="data, index in employeesDialogInputItems" :key="index"
                 v-model="data.dataModel"
                 :label="data.labelText"
               />
@@ -117,7 +117,7 @@
               is-delete
             >
               <v-text-field
-                v-for="data, index in employeesDeleteDialogInputItems" :key="index"
+                v-for="data, index in employeesDialogInputItems" :key="index"
                 v-model="data.dataModel"
                 :label="data.labelText"
               />
@@ -127,7 +127,7 @@
             <btn-with-list-dialog
               header-text="Список сотрудников"
               btn-text="Посмотреть записи"
-              :max-width="1200"
+              :max-width="450"
               :headers="EmployeesListDialogHeaders"
               :items="employeesListDialogItems"
             />
@@ -169,53 +169,18 @@ export default {
     return {
       items: [ 'Оборудование', 'Сотрудники', 'Помещения', 'Отчеты' ],
       widgetEnum: { equipment: 0, employees: 1, premises: 2, reports: 3 },
+      equipmentListDialogItems: [],
+      employeesListDialogItems: [],
       equipmentDialogInputItems: [
         { dataModel: '', labelText: 'Код оборудования' },
         { dataModel: '', labelText: 'Инвентарный номер' },
         { dataModel: '', labelText: 'Состояние' },
         { dataModel: '', labelText: 'Код типа оборудования' },
       ],
-      equipmentListDialogItems: [],
-      employeesAddDialogInputItems: [
+      employeesDialogInputItems: [
         { dataModel: '', labelText: 'Код МОЛа' },
         { dataModel: '', labelText: 'Код сотрудника' },
-        { dataModel: '', labelText: 'Начало ответственности' },
-      ],
-      employeesEditDialogInputItems: [
-        { dataModel: '', labelText: 'Код МОЛа' },
-        { dataModel: '', labelText: 'Код сотрудника' },
-        { dataModel: '', labelText: 'Начало ответственности' },
-      ],
-      employeesDeleteDialogInputItems: [
-        { dataModel: '', labelText: 'Код МОЛа' },
-        { dataModel: '', labelText: 'Код сотрудника' },
-        { dataModel: '', labelText: 'Начало ответственности' },
-      ],
-      employeesListDialogItems: [
-        { id: 1, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
-          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
-          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
-        },
-        { id: 2, codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
-          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
-          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
-        },
-        { id: 3, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
-          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
-          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
-        },
-        { id: 4, codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
-          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
-          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
-        },
-        { id: 5, codeEmployee: 1, surnameEmployee: 'Третьяков', firstnameEmployee: 'Никита', 
-          lastnameEmployee: 'Валерьевич', telephoneEmployee: '79992503327', jobCodeEmployee: '120', 
-          departmentCodeEmployee: '320' , emailEmployee: 'fentomi02@mail.ru'
-        },
-        { id: 6, codeEmployee: 2, surnameEmployee: 'Спарк', firstnameEmployee: 'Алексей', 
-          lastnameEmployee: 'Валентинович', telephoneEmployee: '7900345876', jobCodeEmployee: '119', 
-          departmentCodeEmployee: '320' , emailEmployee: 'alexeySparking@mail.ru'
-        }
+        { dataModel: '', labelText: 'Начало ответственности' }
       ],
       isAccessAction: false,
       isErrorAction: false,
@@ -268,49 +233,44 @@ export default {
       });
       this.equipmentDialogInputItems = this.equipmentDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
     },
-    employeeAddFunc() {
-      if(!this.employeesAddDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
+    async employeeAddFunc() {
+      if(!this.employeesDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
       this.isAccessAction = true;
-      console.log(this.employeesAddDialogInputItems);
-      this.employeesListDialogItems.push({
-        id: this.employeesListDialogItems.length+1,
-        codeEmployee: this.employeesAddDialogInputItems[0].dataModel,
-        surnameEmployee: this.employeesAddDialogInputItems[1].dataModel,
-        firstnameEmployee: this.employeesAddDialogInputItems[2].dataModel,
-        lastnameEmployee: this.employeesAddDialogInputItems[3].dataModel,
-        telephoneEmployee: this.employeesAddDialogInputItems[4].dataModel,
-        jobCodeEmployee: this.employeesAddDialogInputItems[5].dataModel,
-        departmentCodeEmployee: this.employeesAddDialogInputItems[6].dataModel,
-        emailEmployee: this.employeesAddDialogInputItems[7].dataModel,
+      await axios.post('http://127.0.0.1:5000/data/mol', {
+        kod_MOL: Number(this.employeesDialogInputItems[0].dataModel),
+        kod_sotr: Number(this.employeesDialogInputItems[1].dataModel),
+        nach_otvetst: this.employeesDialogInputItems[2].dataModel,
+        method: 'ADD',
+      }).finally(async () => {
+        await this.getEmplyeesListDialogItems();
       });
-      this.employeesAddDialogInputItems = this.employeesAddDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+      this.employeesDialogInputItems = this.employeesDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
     },
-    employeeEditFunc() {
-      if(!this.employeesEditDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
+    async employeeEditFunc() {
+      if(!this.employeesDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
       this.isAccessAction = true;
-      const id = this.employeesEditDialogInputItems[0].dataModel;
-      const index = this.employeesListDialogItems.findIndex(el => el.id == id);
-      this.employeesListDialogItems.splice(index, 1);
-      this.employeesListDialogItems.splice(index, 0, {
-        id: id,
-        codeEmployee: this.employeesEditDialogInputItems[0].dataModel,
-        surnameEmployee: this.employeesEditDialogInputItems[1].dataModel,
-        firstnameEmployee: this.employeesEditDialogInputItems[2].dataModel,
-        lastnameEmployee: this.employeesEditDialogInputItems[3].dataModel,
-        telephoneEmployee: this.employeesEditDialogInputItems[4].dataModel,
-        jobCodeEmployee: this.employeesEditDialogInputItems[5].dataModel,
-        departmentCodeEmployee: this.employeesEditDialogInputItems[6].dataModel,
-        emailEmployee: this.employeesEditDialogInputItems[7].dataModel,
+      await axios.post('http://127.0.0.1:5000/data/mol', {
+        kod_MOL: Number(this.employeesDialogInputItems[0].dataModel),
+        kod_sotr: Number(this.employeesDialogInputItems[1].dataModel),
+        nach_otvetst: this.employeesDialogInputItems[2].dataModel,
+        method: 'EDIT',
+      }).finally(async () => {
+        await this.getEmplyeesListDialogItems();
       });
-      this.employeesEditDialogInputItems = this.employeesEditDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+      this.employeesDialogInputItems = this.employeesDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
     },
-    employeeDeleteFunc() {
-      if(!this.employeesDeleteDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
+    async employeeDeleteFunc() {
+      if(!this.employeesDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
       this.isAccessAction = true;
-      const id = this.employeesDeleteDialogInputItems[0].dataModel;
-      const index = this.employeesListDialogItems.findIndex(el => el.id == id);
-      this.employeesListDialogItems.splice(index, 1);
-      this.employeesDeleteDialogInputItems = this.employeesDeleteDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+      await axios.post('http://127.0.0.1:5000/data/mol', {
+        kod_MOL: Number(this.employeesDialogInputItems[0].dataModel),
+        kod_sotr: Number(this.employeesDialogInputItems[1].dataModel),
+        nach_otvetst: this.employeesDialogInputItems[2].dataModel,
+        method: 'DELETE',
+      }).finally(async () => {
+        await this.getEmplyeesListDialogItems();
+      });
+      this.employeesDialogInputItems = this.employeesDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
     },
     async getEquipmentListDialogItems() {
       await axios.get('http://127.0.0.1:5000/data/equipment').then(response => {
@@ -334,15 +294,9 @@ export default {
     },
     EmployeesListDialogHeaders() {
       return [
-        { title: 'id', align: 'start', key: 'id'},
-        { title: 'Код сотрудника', align: 'start', key: 'codeEmployee'},
-        { title: 'Фамилия', align: 'center', key: 'surnameEmployee'},
-        { title: 'Имя', align: 'center', key: 'firstnameEmployee'},
-        { title: 'Отчество', align: 'center', key: 'lastnameEmployee'},
-        { title: 'Телефон', align: 'center', key: 'telephoneEmployee'},
-        { title: 'Код должности', align: 'center', key: 'jobCodeEmployee'},
-        { title: 'Код подразделения', align: 'center', key: 'departmentCodeEmployee'},
-        { title: 'Электронная почта', align: 'center', key: 'emailEmployee'},
+        { title: 'Код МОЛа', align: 'start', key: 'kod_MOL'},
+        { title: 'Код сотрудника', align: 'start', key: 'kod_sotr'},
+        { title: 'Начало ответственности', align: 'center', key: 'nach_otvetst'},
       ];
     },
     PremisesListDialogHeader() {

@@ -92,43 +92,19 @@ class Database():
         db.close()
         json_data = []
         for item in data:
-            if len(item) == 3:
-                json_data.append({
-                    'kod_MOL': item[0],
-                    'nach_otvetst': item[1],
-                    'kod_sotr': item[2]
-                })
-            elif len(item) == 4:
-                json_data.append({
-                    'kod_MOL': item[0],
-                    'nach_otvetst': item[1],
-                    'okonch_otvetstv': item[2],
-                    'kod_sotr': item[3]
-                })
+            json_data.append({
+                'kod_MOL': item[0],
+                'nach_otvetst': item[1],
+                'kod_sotr': item[2]
+            })
         return json_data
 
 
 if __name__ == '__main__':
-    # ОБОРУДОВАНИЕ
-    # Database.delete_equipment({'id': 1007})
-    # Database.add_equipment({
-    #     'kod_oborud': 1007,
-    #     'invent_nomer': 10107,
-    #     'sostoyanie': 'Требует ремонта',
-    #     'kod_tipa_ucheta': 107
-    # })
-    # Database.edit_equipment({
-    #     'kod_oborud': 1007,
-    #     'invent_nomer': 10107,
-    #     'sostoyanie': 'Неисправен',
-    #     'kod_tipa_ucheta': 107
-    # })
-    # print(Database.get_equipment_list())
-
     # МОЛы
     # Database.add_mol({
-    #     'kod_MOL': 104,
-    #     'nach_otvetst': '2023-04-01',
+    #     'kod_MOL': 103,
+    #     'nach_otvetst': "2023-03-01",
     #     'kod_sotr': 2,
     # })
     # Database.edit_mol({

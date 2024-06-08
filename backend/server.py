@@ -35,8 +35,8 @@ def mol_endpoint():
             Database.add_mol(data)
         elif data['method'] == 'EDIT':
             Database.edit_mol(data)
-    elif request.method == 'DELETE':
-        Database.delete_mol(json.loads(request.data))
+        elif data['method'] == 'DELETE':
+            Database.delete_mol(data)
     return "True"
 
 
