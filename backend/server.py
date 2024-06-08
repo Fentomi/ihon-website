@@ -10,46 +10,32 @@ CORS(app, resources={r"/*": {'origins': "*"}})
 CORS(app, resources={r"/*": {"origins": "http://localhost:8080", "allow_headers": "Access-Control-Allow-Origin"}})
 
 
-@app.route('/', methods=["GET"])
-def main():
-    return "Hello, world!"
+@app.route('/data/equipment', methods=["GET", "POST", "DELETE"])
+def equipment_endpoint():
+    if request.method == 'GET':
+        return Database.get_equipment_list()
+    elif request.method == 'POST':
+        data = json.loads(request.data)
+        if data['method'] == 'ADD':
+            Database.add_equipment(data)
+        elif data['method'] == 'EDIT':
+            Database.edit_equipment(data)
+    elif request.method == 'DELETE':
+        Database.delete_equipment(json.loads(request.data))
 
 
-@app.route('/data/requests', methods=["POST", "GET", "DELETE"])
-def send_requests():
-    if request.method == "POST":
-        Database.write_data_in_database(json.loads(request.data), "request")
-    db = Database()
-    db.create_connect()
-    data = db.send_sql_request("select * from requests")
-    db.close()
-    return Database.convert_data_in_json(data=data, type_data="requests")
-
-
-@app.route('/data/delete/requests', methods=["POST"])
-def delete_request():
-    Database.delete_data_in_database(json.loads(request.data), type_data="requests")
-    return "True"
-
-
-@app.route('/data/services', methods=["POST", "GET"])
-def send_services():
-    db = Database()
-    db.create_connect()
-    data = db.send_sql_request("SELECT * FROM services")
-    db.close()
-    return Database.convert_data_in_json(data=data, type_data="services")
-
-
-@app.route('/data/addictions', methods=["POST", "GET"])
-def send_addictions():
-    if request.method == "POST":
-        Database.write_data_in_database(json.loads(request.data), "addiction")
-    db = Database()
-    db.create_connect()
-    data = db.send_sql_request("select services.name_service, addictions.id_req from addictions, services where addictions.id_service = services.id_service;")
-    db.close()
-    return Database.convert_data_in_json(data=data, type_data="addictions")
+@app.route('/data/mol', methods=["GET", "POST", "DELETE"])
+def mol_endpoint():
+    if request.method == 'GET':
+        return Database.get_mol_list()
+    elif request.method == 'POST':
+        data = json.loads(request.data)
+        if data['method'] == 'ADD':
+            Database.add_mol(data)
+        elif data['method'] == 'EDIT':
+            Database.edit_mol(data)
+    elif request.method == 'DELETE':
+        Database.delete_mol(json.loads(request.data))
 
 
 if __name__ == '__main__':
