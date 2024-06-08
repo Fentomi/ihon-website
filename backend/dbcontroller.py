@@ -46,7 +46,7 @@ class Database():
         db = Database()
         db.create_connect()
         data = db.send_sql_request(f"SELECT * FROM sos_oborudovanie")
-        print(f"SELECT * FROM sos_oborudovanie")
+        print(f"[COMMAND] SELECT * FROM sos_oborudovanie")
         db.close()
         return data
 
@@ -71,7 +71,7 @@ class Database():
         db = Database()
         db.create_connect()
         db.send_sql_request(f"DELETE FROM sos_MOL WHERE kod_MOL = {data['kod_MOL']};")
-        print(f"DELETE FROM sos_MOL WHERE kod_MOL = {data['kod_MOL']};")
+        print(f"[COMMAND] DELETE FROM sos_MOL WHERE kod_MOL = {data['kod_MOL']};")
         db.close()
 
     @staticmethod
@@ -79,7 +79,7 @@ class Database():
         db = Database()
         db.create_connect()
         data = db.send_sql_request(f"SELECT kod_MOL, nach_otvetst, kod_sotr FROM sos_MOL;")
-        print(f"SELECT kod_MOL, nach_otvetst, kod_sotr FROM sos_MOL;")
+        print(f"[COMMAND] SELECT kod_MOL, nach_otvetst, kod_sotr FROM sos_MOL;")
         db.close()
         return data
 
