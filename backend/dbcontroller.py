@@ -98,20 +98,3 @@ class Database():
                 'kod_sotr': item[2]
             })
         return json_data
-
-
-if __name__ == '__main__':
-    # МОЛы
-    # Database.add_mol({
-    #     'kod_MOL': 103,
-    #     'nach_otvetst': "2023-03-01",
-    #     'kod_sotr': 2,
-    # })
-    # Database.edit_mol({
-    #     'kod_MOL': 104,
-    #     'nach_otvetst': '2023-05-01',
-    #     'kod_sotr': 2,
-    # })
-    # Database.delete_mol({'kod_MOL': 103})
-    # print(Database.get_mol_list())
-    pass
