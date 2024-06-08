@@ -48,7 +48,15 @@ class Database():
         data = db.send_sql_request(f"SELECT * FROM sos_oborudovanie")
         print(f"[COMMAND] SELECT * FROM sos_oborudovanie")
         db.close()
-        return data
+        json_data = []
+        for item in data:
+            json_data.append({
+                'kod_oborud': item[0],
+                'invent_nomer': item[1],
+                'sostoyanie': item[2],
+                'kod_tipa_ucheta': item[3]
+            })
+        return json_data
 
     @staticmethod
     def add_mol(data: dict):
@@ -81,7 +89,22 @@ class Database():
         data = db.send_sql_request(f"SELECT kod_MOL, nach_otvetst, kod_sotr FROM sos_MOL;")
         print(f"[COMMAND] SELECT kod_MOL, nach_otvetst, kod_sotr FROM sos_MOL;")
         db.close()
-        return data
+        json_data = []
+        for item in data:
+            if len(item) == 3:
+                json_data.append({
+                    'kod_MOL': item[0],
+                    'nach_otvetst': item[1],
+                    'kod_sotr': item[2]
+                })
+            elif len(item) == 4:
+                json_data.append({
+                    'kod_MOL': item[0],
+                    'nach_otvetst': item[1],
+                    'okonch_otvetstv': item[2],
+                    'kod_sotr': item[3]
+                })
+        return json_data
 
 
 if __name__ == '__main__':
