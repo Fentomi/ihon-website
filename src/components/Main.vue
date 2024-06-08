@@ -21,7 +21,7 @@
               is-add
             >
               <v-text-field
-                v-for="data, index in equipmentAddDialogInputItems" :key="index"
+                v-for="data, index in equipmentDialogInputItems" :key="index"
                 v-model="data.dataModel"
                 :label="data.labelText"
               />
@@ -38,7 +38,7 @@
               is-edit
             >
               <v-text-field
-                v-for="data, index in equipmentEditDialogInputItems" :key="index"
+                v-for="data, index in equipmentDialogInputItems" :key="index"
                 v-model="data.dataModel"
                 :label="data.labelText"
               />
@@ -55,7 +55,7 @@
               is-delete
             >
               <v-text-field
-                v-for="data, index in equipmentDeleteDialogInputItems" :key="index"
+                v-for="data, index in equipmentDialogInputItems" :key="index"
                 v-model="data.dataModel"
                 :label="data.labelText"
               />
@@ -161,6 +161,7 @@
 <script>
 import BtnWithListDialog from '@/components/widgets/BtnWithListDialog.vue';
 import BtnWithFormDialog from '@/components/widgets/BtnWithFormDialog.vue';
+import axios from 'axios';
 
 export default {
   components: { BtnWithListDialog, BtnWithFormDialog },
@@ -168,33 +169,13 @@ export default {
     return {
       items: [ 'Оборудование', 'Сотрудники', 'Помещения', 'Отчеты' ],
       widgetEnum: { equipment: 0, employees: 1, premises: 2, reports: 3 },
-      equipmentAddDialogInputItems: [
+      equipmentDialogInputItems: [
         { dataModel: '', labelText: 'Код оборудования' },
         { dataModel: '', labelText: 'Инвентарный номер' },
         { dataModel: '', labelText: 'Состояние' },
         { dataModel: '', labelText: 'Код типа оборудования' },
       ],
-      equipmentEditDialogInputItems: [
-        { dataModel: '', labelText: 'id *'},
-        { dataModel: '', labelText: 'Код оборудования' },
-        { dataModel: '', labelText: 'Инвентарный номер' },
-        { dataModel: '', labelText: 'Состояние' },
-        { dataModel: '', labelText: 'Код типа оборудования' },
-      ],
-      equipmentDeleteDialogInputItems: [
-        { dataModel: '', labelText: 'id *'},
-        { dataModel: '', labelText: 'Код оборудования' },
-        { dataModel: '', labelText: 'Инвентарный номер' },
-        { dataModel: '', labelText: 'Состояние' },
-        { dataModel: '', labelText: 'Код типа оборудования' },
-      ],
-      equipmentListDialogItems: [
-        { id: 1, inventoryCode: 505, inventoryNumber: 100501, state: 'Active', typeCodeEquipment: 600},
-        { id: 2, inventoryCode: 555, inventoryNumber: 100502, state: 'Active', typeCodeEquipment: 450},
-        { id: 3, inventoryCode: 565, inventoryNumber: 100503, state: 'Disabled', typeCodeEquipment: 450},
-        { id: 4, inventoryCode: 575, inventoryNumber: 100504, state: 'Active', typeCodeEquipment: 600},
-        { id: 5, inventoryCode: 585, inventoryNumber: 100505, state: 'Active', typeCodeEquipment: 550},
-      ],
+      equipmentListDialogItems: [],
       employeesAddDialogInputItems: [
         { dataModel: '', labelText: 'Код МОЛа' },
         { dataModel: '', labelText: 'Код сотрудника' },
@@ -245,40 +226,47 @@ export default {
       this.isAccessAction = false;
       this.isErrorAction = false;
     },
-    equipmentAddFunction() {
-      if(!this.equipmentAddDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
+    async equipmentAddFunction() {
+      if(!this.equipmentDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
       this.isAccessAction = true;
-      this.equipmentListDialogItems.push({
-        id: this.equipmentListDialogItems.length+1,
-        inventoryCode: this.equipmentAddDialogInputItems[0].dataModel,
-        inventoryNumber: this.equipmentAddDialogInputItems[1].dataModel,
-        state: this.equipmentAddDialogInputItems[2].dataModel,
-        typeCodeEquipment: this.equipmentAddDialogInputItems[3].dataModel
+      await axios.post('http://127.0.0.1:5000/data/equipment', {
+        kod_oborud: Number(this.equipmentDialogInputItems[0].dataModel),
+        invent_nomer: Number(this.equipmentDialogInputItems[1].dataModel),
+        sostoyanie: this.equipmentDialogInputItems[2].dataModel,
+        kod_tipa_ucheta: Number(this.equipmentDialogInputItems[3].dataModel),
+        method: 'ADD',
+      }).finally(async () => {
+        await this.getEquipmentListDialogItems();
       });
-      this.equipmentAddDialogInputItems = this.equipmentAddDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+      this.equipmentDialogInputItems = this.equipmentDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
     },
-    equpmentEditFunction() {
-      if(!this.equipmentEditDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
+    async equpmentEditFunction() {
+      if(!this.equipmentDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
       this.isAccessAction = true;
-      const id = this.equipmentEditDialogInputItems[0].dataModel;
-      const index = this.equipmentListDialogItems.findIndex(el => el.id == id);
-      this.equipmentListDialogItems.splice(index, 1);
-      this.equipmentListDialogItems.splice(index, 0, {
-        id: id,
-        inventoryCode: this.equipmentEditDialogInputItems[1].dataModel,
-        inventoryNumber: this.equipmentEditDialogInputItems[2].dataModel,
-        state: this.equipmentEditDialogInputItems[3].dataModel,
-        typeCodeEquipment: this.equipmentEditDialogInputItems[4].dataModel
+      await axios.post('http://127.0.0.1:5000/data/equipment', {
+        kod_oborud: Number(this.equipmentDialogInputItems[0].dataModel),
+        invent_nomer: Number(this.equipmentDialogInputItems[1].dataModel),
+        sostoyanie: this.equipmentDialogInputItems[2].dataModel,
+        kod_tipa_ucheta: Number(this.equipmentDialogInputItems[3].dataModel),
+        method: 'EDIT',
+      }).finally(async () => {
+        await this.getEquipmentListDialogItems();
       });
-      this.equipmentEditDialogInputItems = this.equipmentEditDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+      this.equipmentDialogInputItems = this.equipmentDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
     },
-    equipmentDeleteFunction() {
-      if(!this.equipmentDeleteDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
+    async equipmentDeleteFunction() {
+      if(!this.equipmentDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
       this.isAccessAction = true;
-      const id = this.equipmentDeleteDialogInputItems[0].dataModel;
-      const index = this.equipmentListDialogItems.findIndex(el => el.id == id);
-      this.equipmentListDialogItems.splice(index, 1);
-      this.equipmentDeleteDialogInputItems = this.equipmentDeleteDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
+      await axios.post('http://127.0.0.1:5000/data/equipment', {
+        kod_oborud: Number(this.equipmentDialogInputItems[0].dataModel),
+        invent_nomer: Number(this.equipmentDialogInputItems[1].dataModel),
+        sostoyanie: this.equipmentDialogInputItems[2].dataModel,
+        kod_tipa_ucheta: Number(this.equipmentDialogInputItems[3].dataModel),
+        method: 'DELETE',
+      }).finally(async () => {
+        await this.getEquipmentListDialogItems();
+      });
+      this.equipmentDialogInputItems = this.equipmentDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
     },
     employeeAddFunc() {
       if(!this.employeesAddDialogInputItems.every(item => item.dataModel)) return this.isErrorAction = true;
@@ -324,15 +312,24 @@ export default {
       this.employeesListDialogItems.splice(index, 1);
       this.employeesDeleteDialogInputItems = this.employeesDeleteDialogInputItems.map(item => { return { dataModel: '', labelText: item.labelText }});
     },
+    async getEquipmentListDialogItems() {
+      await axios.get('http://127.0.0.1:5000/data/equipment').then(response => {
+        this.equipmentListDialogItems = response.data;
+      }).catch(err => console.error(err));
+    },
+    async getEmplyeesListDialogItems() {
+      await axios.get('http://127.0.0.1:5000/data/mol').then(response => {
+        this.employeesListDialogItems = response.data;
+      }).catch(err => console.error(err));
+    }
   },
   computed: {
     EquipmentListDialogHeaders() {
       return [
-        { title: 'id', align: 'start', key: 'id'},
-        { title: 'Код оборудования', align: 'start', key: 'inventoryCode' },
-        { title: 'Инвентарный номер', align: 'end', key: 'inventoryNumber' },
-        { title: 'Состояние', align: 'end', key: 'state' },
-        { title: 'Код типа оборудования', align: 'end', key: 'typeCodeEquipment' },
+        { title: 'Код оборудования', align: 'start', key: 'kod_oborud' },
+        { title: 'Инвентарный номер', align: 'end', key: 'invent_nomer' },
+        { title: 'Состояние', align: 'end', key: 'sostoyanie' },
+        { title: 'Код типа оборудования', align: 'end', key: 'kod_tipa_ucheta' },
       ]; 
     },
     EmployeesListDialogHeaders() {
@@ -366,6 +363,10 @@ export default {
         { id: 5, roomСode: 104, roomName: 'Коверная', roomNumber: 100504, departmentCode: 420},
       ]
     },
+  },
+  async created() {
+    await this.getEquipmentListDialogItems();
+    await this.getEmplyeesListDialogItems();
   },
 }
 </script>

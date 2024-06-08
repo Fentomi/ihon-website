@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-      userIsAuthorized: false,
+      userIsAuthorized: true,
     }
   }
 }

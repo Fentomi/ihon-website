@@ -10,7 +10,7 @@ CORS(app, resources={r"/*": {'origins': "*"}})
 CORS(app, resources={r"/*": {"origins": "http://localhost:8080", "allow_headers": "Access-Control-Allow-Origin"}})
 
 
-@app.route('/data/equipment', methods=["GET", "POST", "DELETE"])
+@app.route('/data/equipment', methods=["GET", "POST"])
 def equipment_endpoint():
     if request.method == 'GET':
         return Database.get_equipment_list()
@@ -20,8 +20,9 @@ def equipment_endpoint():
             Database.add_equipment(data)
         elif data['method'] == 'EDIT':
             Database.edit_equipment(data)
-    elif request.method == 'DELETE':
-        Database.delete_equipment(json.loads(request.data))
+        elif data['method'] == 'DELETE':
+            Database.delete_equipment(data)
+    return "True"
 
 
 @app.route('/data/mol', methods=["GET", "POST", "DELETE"])
@@ -36,7 +37,8 @@ def mol_endpoint():
             Database.edit_mol(data)
     elif request.method == 'DELETE':
         Database.delete_mol(json.loads(request.data))
+    return "True"
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

@@ -29,8 +29,9 @@ class Database():
     def delete_equipment(data: dict):
         db = Database()
         db.create_connect()
-        db.send_sql_request(f"DELETE FROM sos_oborudovanie WHERE kod_oborud = {data['id']};")
-        print(f"[COMMAND] DELETE FROM sos_oborudovanie WHERE kod_oborud = {data['id']};")
+        print(data)
+        db.send_sql_request(f"DELETE FROM sos_oborudovanie WHERE kod_oborud = {data['kod_oborud']};")
+        print(f"[COMMAND] DELETE FROM sos_oborudovanie WHERE kod_oborud = {data['kod_oborud']};")
         db.close()
 
     @staticmethod

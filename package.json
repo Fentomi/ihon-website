@@ -11,6 +11,7 @@
     "@mdi/font": "7.0.96",
     "@mdi/js": "^7.4.47",
     "@syncfusion/ej2-vue-dropdowns": "^25.1.39",
+    "axios": "^1.7.2",
     "roboto-fontface": "*",
     "tippy.js": "^6.3.7",
     "vue": "^3.2.0",
