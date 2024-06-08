@@ -42,6 +42,15 @@ class Database():
         db.close()
 
     @staticmethod
+    def get_equipment_list():
+        db = Database()
+        db.create_connect()
+        data = db.send_sql_request(f"SELECT * FROM sos_oborudovanie")
+        print(f"SELECT * FROM sos_oborudovanie")
+        db.close()
+        return data
+
+    @staticmethod
     def add_mol(data: dict):
         db = Database()
         db.create_connect()
@@ -65,6 +74,15 @@ class Database():
         print(f"DELETE FROM sos_MOL WHERE kod_MOL = {data['kod_MOL']};")
         db.close()
 
+    @staticmethod
+    def get_mol_list():
+        db = Database()
+        db.create_connect()
+        data = db.send_sql_request(f"SELECT kod_MOL, nach_otvetst, kod_sotr FROM sos_MOL;")
+        print(f"SELECT kod_MOL, nach_otvetst, kod_sotr FROM sos_MOL;")
+        db.close()
+        return data
+
 
 if __name__ == '__main__':
     # ОБОРУДОВАНИЕ
@@ -81,6 +99,7 @@ if __name__ == '__main__':
     #     'sostoyanie': 'Неисправен',
     #     'kod_tipa_ucheta': 107
     # })
+    # print(Database.get_equipment_list())
 
     # МОЛы
     # Database.add_mol({
@@ -94,4 +113,5 @@ if __name__ == '__main__':
     #     'kod_sotr': 2,
     # })
     # Database.delete_mol({'kod_MOL': 103})
+    # print(Database.get_mol_list())
     pass
